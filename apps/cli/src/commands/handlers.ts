@@ -71,6 +71,20 @@ function isBlank(value: string | undefined): boolean {
   return !value || value.trim().length === 0;
 }
 
+function resolveEnvPlaceholder(value: string): string {
+  const trimmed = value.trim();
+  const direct = trimmed.match(/^\$([A-Za-z_][A-Za-z0-9_]*)$/);
+  const braced = trimmed.match(/^\$\{([A-Za-z_][A-Za-z0-9_]*)\}$/);
+  const prefixed = trimmed.match(/^env:([A-Za-z_][A-Za-z0-9_]*)$/i);
+
+  const envName = direct?.[1] ?? braced?.[1] ?? prefixed?.[1];
+  if (!envName) {
+    return trimmed;
+  }
+
+  return process.env[envName]?.trim() ?? "";
+}
+
 async function promptVisible(question: string): Promise<string> {
   const rl = createInterface({ input: process.stdin, output: process.stdout });
   try {
@@ -179,10 +193,10 @@ async function resolveApkType(apkType?: string): Promise<ApkType> {
 function parseSigningJson(raw: string): PartialSigningConfig {
   const parsed = JSON.parse(raw) as Record<string, unknown>;
 
-  const keystorePath = String(parsed.keystorePath ?? parsed.keystore ?? "").trim();
-  const keyAlias = String(parsed.keyAlias ?? parsed.alias ?? "").trim();
-  const keystorePassword = String(parsed.keystorePassword ?? parsed.keystorePass ?? "").trim();
-  const keyPassword = String(parsed.keyPassword ?? parsed.keyPass ?? "").trim();
+  const keystorePath = resolveEnvPlaceholder(String(parsed.keystorePath ?? parsed.keystore ?? ""));
+  const keyAlias = resolveEnvPlaceholder(String(parsed.keyAlias ?? parsed.alias ?? ""));
+  const keystorePassword = resolveEnvPlaceholder(String(parsed.keystorePassword ?? parsed.keystorePass ?? ""));
+  const keyPassword = resolveEnvPlaceholder(String(parsed.keyPassword ?? parsed.keyPass ?? ""));
 
   return {
     keystorePath: keystorePath || undefined,
@@ -195,7 +209,13 @@ function parseSigningJson(raw: string): PartialSigningConfig {
 function parseSigningMarkdown(raw: string): PartialSigningConfig {
   const readValue = (pattern: RegExp): string | undefined => {
     const match = raw.match(pattern);
-    return match?.[1]?.trim() || undefined;
+    const value = match?.[1];
+    if (!value) {
+      return undefined;
+    }
+
+    const resolved = resolveEnvPlaceholder(value);
+    return resolved || undefined;
   };
 
   return {

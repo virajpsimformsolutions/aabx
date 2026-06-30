@@ -89,8 +89,8 @@ Options:
 
 Convert .aab to APK. If no APK type is provided, CLI asks:
 
-- 1) universal
-- 2) signed
+- 1. universal
+- 2. signed
 
 ```bash
 npm --workspace @mspvirajpatel/aabx run dev -- build <inputAab> [options]
@@ -122,10 +122,23 @@ npm --workspace @mspvirajpatel/aabx run dev -- build ./my-app.aab --apk-type sig
 npm --workspace @mspvirajpatel/aabx run dev -- build ./my-app.aab --apk-type signed --signing-json ./signing.json
 ```
 
+CI-friendly signing.json can reference environment variables:
+
+```json
+{
+  "keystorePath": "$AABX_KEYSTORE_PATH",
+  "keyAlias": "$AABX_KEY_ALIAS",
+  "keystorePassword": "$AABX_KEYSTORE_PASSWORD",
+  "keyPassword": "$AABX_KEY_PASSWORD"
+}
+```
+
+Supported placeholder formats: `$VAR_NAME`, `${VAR_NAME}`, `env:VAR_NAME`.
+
 If signed mode is selected and signing values are missing, AABX asks how you want to provide them:
 
-- 1) prompt fields (keystore path, alias, hidden passwords)
-- 2) JSON (inline JSON or JSON file path)
+- 1. prompt fields (keystore path, alias, hidden passwords)
+- 2. JSON (inline JSON or JSON file path)
 
 Password prompts are hidden (not echoed).
 
