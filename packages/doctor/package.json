@@ -1,0 +1,24 @@
+{
+  "name": "@mspvirajpatel/doctor",
+  "version": "0.1.0",
+  "private": true,
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "clean": "node -e \"require('node:fs').rmSync('dist',{ recursive: true, force: true })\"",
+    "build": "tsc -p tsconfig.json",
+    "lint": "eslint src --ext .ts",
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "prepack": "npm run clean && npm run build"
+  },
+  "dependencies": {
+    "@mspvirajpatel/adb": "0.1.0",
+    "@mspvirajpatel/android": "0.1.0",
+    "@mspvirajpatel/core": "0.1.0"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "baseUrl": ".",
+    "paths": {
+      "@mspvirajpatel/adb": ["packages/adb/src/index.ts"],
+      "@mspvirajpatel/android": ["packages/android/src/index.ts"],
+      "@mspvirajpatel/bundletool": ["packages/bundletool/src/index.ts"],
+      "@mspvirajpatel/config": ["packages/config/src/index.ts"],
+      "@mspvirajpatel/core": ["packages/core/src/index.ts"],
+      "@mspvirajpatel/doctor": ["packages/doctor/src/index.ts"],
+      "@mspvirajpatel/logger": ["packages/logger/src/index.ts"],
+      "@mspvirajpatel/shared": ["packages/shared/src/index.ts"]
+    },
+    "strict": true,
+    "noImplicitAny": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "outDir": "dist"
+  }
+}

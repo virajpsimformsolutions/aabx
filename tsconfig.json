@@ -1,0 +1,14 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./apps/cli" },
+    { "path": "./packages/core" },
+    { "path": "./packages/bundletool" },
+    { "path": "./packages/adb" },
+    { "path": "./packages/android" },
+    { "path": "./packages/doctor" },
+    { "path": "./packages/logger" },
+    { "path": "./packages/config" },
+    { "path": "./packages/shared" }
+  ]
+}
